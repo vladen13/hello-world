@@ -1,0 +1,34 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        boolean set;
+        boolean reset;
+        boolean quit = false;
+        int iteration = 0;
+
+        while (true){
+            System.out.print("set = ");
+            set = Boolean.parseBoolean(reader.readLine());
+            System.out.print("reset = ");
+            reset = Boolean.parseBoolean(reader.readLine());
+            iteration = iteration + 1;
+            if (set && !reset) quit = true;
+            else {
+                if (reset && !set) quit = false;
+                else
+                    if (set && reset){
+                    System.out.println("Logic error");
+                    break;
+                    }
+            }
+            System.out.println("q = " + quit + " | s = " + set + " | r = " + reset + " | iter = " + iteration);
+            if (iteration == 20)
+                break;
+        }
+    }
+}
