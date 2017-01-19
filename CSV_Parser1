@@ -1,0 +1,92 @@
+package com.company;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class Main {
+
+    private static ArrayList<String> value = new ArrayList<String>();
+    private static ArrayList<String> date = new ArrayList<String>();
+
+    public static void main(String[] args) {
+        String csvFile = "/Users/denysenko/Desktop/АСК Титан/Каховская ГЭС/данные тест/БП-р.ст11-13.csv";
+        ArrayList<String> list = parserCSV(csvFile);
+        /*for (int i = list.size() - 1; i > 0; i--) {
+            System.out.println("value: " + list.get(i) + " date: " + list.get(i - 1));
+        }*/
+        value = listToList(list, 1);
+        date = listToList(list, 0);
+        value = formatList(value, 1, 1);
+        date = formatList(date, 1, 7);
+
+        for (int i = 0; i < date.size(); i++) {
+            System.out.println(value.get(i) + " " + date.get(i));
+        }
+    }
+
+    static void duplicate(){
+        
+    }
+    
+    static ArrayList<String> formatList(ArrayList<String> date, int prefix, int suffix){
+        ArrayList<String> list = new ArrayList<>();
+        list.add(0, date.get(0));
+        for (int i = 1; i < date.size(); i++) {
+                list.add(date.get(i).substring(prefix, date.get(i).length() - suffix));
+        }
+        return list;
+    }
+
+    static ArrayList<String> listToList(ArrayList<String> csvFile, int column){
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = csvFile.size()-1; i >= 0; i--) {
+            switch (column){
+                case 0:{
+                    if (i % 2 == 0)
+                        list.add(csvFile.get(i));
+                    break;
+                }
+                case 1:{
+                    if (i % 2 != 0)
+                        list.add(csvFile.get(i));
+                    break;
+                }
+            }
+        }
+        return list;
+    }
+
+    static ArrayList<String> parserCSV(String csvFile){
+        BufferedReader reader = null;
+        String line = "";
+        String cvsSplitBy = ",";
+        ArrayList<String> csvList = new ArrayList<>();
+
+        try{
+            reader = new BufferedReader(new FileReader(csvFile));
+            while ((line = reader.readLine()) != null){
+                String[] list = line.split(cvsSplitBy);
+                csvList.add(0, list[0]);
+                csvList.add(1, list[1]);
+                //System.out.println("Date = " + list[0] + " , Value = " + list[1]);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return csvList;
+    }
+}
+
