@@ -8,27 +8,39 @@ import java.util.ArrayList;
 
 public class Main {
 
+    private static ArrayList<String> value = new ArrayList<String>();
+    private static ArrayList<String> date = new ArrayList<String>();
+
     public static void main(String[] args) {
         String csvFile = "/Users/denysenko/Desktop/АСК Титан/Каховская ГЭС/данные тест/БП-р.ст11-13.csv";
         ArrayList<String> list = parserCSV(csvFile);
         /*for (int i = list.size() - 1; i > 0; i--) {
             System.out.println("value: " + list.get(i) + " date: " + list.get(i - 1));
         }*/
-        ArrayList<String> value = listToList(list, 0);
-        ArrayList<String> date = listToList(list, 1);
+        value = listToList(list, 1);
+        date = listToList(list, 0);
+        value = formatList(value, 1, 1);
+        date = formatList(date, 1, 7);
+
         for (int i = 0; i < date.size(); i++) {
             System.out.println(value.get(i) + " " + date.get(i));
         }
     }
 
-    public static ArrayList<String> formatData(ArrayList<String> date){
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < date.size(); i++) {
-            String name = s.substring(4, s.length()-4);
-        }
+    static void duplicate(){
+
     }
 
-    public static ArrayList<String> listToList(ArrayList<String> csvFile, int column){
+    static ArrayList<String> formatList(ArrayList<String> date, int prefix, int suffix){
+        ArrayList<String> list = new ArrayList<>();
+        list.add(0, date.get(0));
+        for (int i = 1; i < date.size(); i++) {
+                list.add(date.get(i).substring(prefix, date.get(i).length() - suffix));
+        }
+        return list;
+    }
+
+    static ArrayList<String> listToList(ArrayList<String> csvFile, int column){
         ArrayList<String> list = new ArrayList<>();
         for (int i = csvFile.size()-1; i >= 0; i--) {
             switch (column){
@@ -47,7 +59,7 @@ public class Main {
         return list;
     }
 
-    public static ArrayList<String> parserCSV(String csvFile){
+    static ArrayList<String> parserCSV(String csvFile){
         BufferedReader reader = null;
         String line = "";
         String cvsSplitBy = ",";
